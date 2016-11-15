@@ -1,0 +1,19 @@
+<div class="jumbotron">
+	<h1 class="text-center">This Week</h1>
+	
+	<p class="text-center">{{ message }}</p>
+	<div ng-repeat="event in events | orderBy : orderByDate" class="list-group">
+	  <a href="#" class="list-group-item active">
+	    <h4 class="list-group-item-heading">{{ event.title }}</h4>
+	    <p class="list-group-item-text">{{ event.description }}</p>
+		<p class="list-group-item-text">{{ event.location }}</p>
+		<p class="list-group-item-text">{{ event.date }}</p>
+		<p class="list-group-item-text">{{ event.time }}</p>
+		<a type="button" class="btn btn-primary btn-lg" href="map.html">
+		  location
+		</a>
+		<a href="" id="{{ event.id }}">click here to download your calender file</a>
+	  </a>
+	</div>
+
+</div>

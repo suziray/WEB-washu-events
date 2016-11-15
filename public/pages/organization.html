@@ -1,0 +1,25 @@
+<div class="jumbotron">
+	<h1 class="text-center">Welcome, Organization User! </h1>
+	
+	<p class="text-center">{{ message }}</p>
+
+	<button><a href="#event">Create Event</a></button>
+	<br/><br/>
+	<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading"> Listed Events </div>
+		<div ng-repeat="event in getDataSource('organization_user' ,events) | orderBy : orderByDate" class="list-group">
+		  <a href="#" class="list-group-item active">
+		    <h4 class="list-group-item-heading">{{ event.title }}</h4>
+		    <p class="list-group-item-text">{{ event.description }}</p>
+		    <p class="list-group-item-text">{{ event.location }}</p>
+		    <p class="list-group-item-text">{{ event.date }}</p>
+		    <p class="list-group-item-text">{{ event.time }}</p>
+		    <button>Modify</button>
+		    <button>Delete</button>
+		  </a>
+		</div>
+	</div>
+
+	
+</div>
