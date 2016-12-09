@@ -1,25 +1,325 @@
 <div class="jumbotron">
-	<h1 class="text-center">Welcome, Organization User! </h1>
+	<h1 class="text-center" id="welcome">Welcome, Organization User! </h1>
+
+    <p id="message"></p>
 	
 	<p class="text-center">{{ message }}</p>
 
-	<button><a href="#event">Create Event</a></button>
-	<br/><br/>
-	<div class="panel panel-default">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading"> Listed Events </div>
-		<div ng-repeat="event in getDataSource('organization_user' ,events) | orderBy : orderByDate" class="list-group">
-		  <a href="#" class="list-group-item active">
-		    <h4 class="list-group-item-heading">{{ event.title }}</h4>
-		    <p class="list-group-item-text">{{ event.description }}</p>
-		    <p class="list-group-item-text">{{ event.location }}</p>
-		    <p class="list-group-item-text">{{ event.date }}</p>
-		    <p class="list-group-item-text">{{ event.time }}</p>
-		    <button>Modify</button>
-		    <button>Delete</button>
-		  </a>
-		</div>
-	</div>
+    <style>
+    /* Full-width input fields */
+    input[type=text], input[type=password] {
+        width: 100%;
+        height: 40px;
+        padding: 10px 15px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 15px;
+    }
 
+    /* Set a style for all buttons */
+    .loginbtn {
+        height: 40px;
+        background-color: #4CAF50;
+        color: white;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        font-size: 15px;
+    }
+
+    /* Extra styles for the cancel button */
+    .cancelbtn {
+        height: 40px;
+        background-color: #f44336;
+        color: white;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 50%;
+        font-size: 15px;
+    }
+
+    /* Center the image and position the close button */
+    .imgcontainer {
+        text-align: center;
+        margin: 24px 0 12px 0;
+        position: relative;
+    }
+
+    img.avatar {
+        width: 30%;
+        border-radius: 100%;
+    }
+
+/*    .container {
+        padding: 16px;
+    }*/
+
+    span.psw {
+        float: right;
+        padding-top: 16px;
+    }
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        padding-top: 60px;
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+        border: 1px solid #888;
+        width: 50%; /* Could be more or less, depending on screen size */
+        font-size: 15px;
+    }
+
+    /* The Close Button (x) */
+    .close {
+        position: absolute;
+        right: 25px;
+        top: 0;
+        color: #000;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: red;
+        cursor: pointer;
+    }
+
+    /* Add Zoom Animation */
+    .animate {
+        -webkit-animation: animatezoom 0.6s;
+        animation: animatezoom 0.6s
+    }
+
+    @-webkit-keyframes animatezoom {
+        from {-webkit-transform: scale(0)} 
+        to {-webkit-transform: scale(1)}
+    }
+        
+    @keyframes animatezoom {
+        from {transform: scale(0)} 
+        to {transform: scale(1)}
+    }
+
+    /* Change styles for span and cancel button on extra small screens */
+    @media screen and (max-width: 300px) {
+        span.psw {
+           display: block;
+           float: none;
+        }
+        .cancelbtn {
+           width: 100%;
+        }
+    }
+    .img {
+            position: relative;
+            float: left;
+            width:  300px;
+            height: 200px;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+    }
+    </style>
+
+
+
+    <div id="id01" class="modal">
+      
+      <form class="modal-content animate">
+        <div class="imgcontainer">
+          <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+          <img src="images/washingtonuniversitystlouis_logo.png" style="width:200px;height:200px;">
+        </div>
+
+        <div class="container">
+          <label><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" id="username" ng-model="newEvent.host">
+
+          <label><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" ng-model="user">
+            
+          <button class="loginbtn" onclick="document.getElementById('id01').style.display='none';login()" ng-click="init(user)">Login</button>
+          <input type="checkbox" checked="checked"> Remember me
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+          <span class="psw">Forgot <a onclick="alert('Database in development')">password?</a></span>
+        </div>
+      </form>
+    </div>
+
+    <div id="id02" class="modal">
+      
+      <form class="modal-content animate">
+        <div class="imgcontainer">
+          <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+          <img src="images/washingtonuniversitystlouis_logo.png" style="width:200px;height:200px;">
+        </div>
+
+        <div class="container">
+          <label><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" id="username">
+
+          <label><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw">
+
+          <label><b>Re-enter Password</b></label>
+          <input type="password" placeholder="Re-enter Password" name="psw1">
+            
+          <button class="loginbtn" onclick="document.getElementById('id02').style.display='none';alert('Thanks for your registration!')">Register</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+          <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="id03" class="modal" ng-controller="mainController">
+      
+      <form class="modal-content animate">
+        <div class="imgcontainer">
+          <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
+          <img src="images/washingtonuniversitystlouis_logo.png" style="width:200px;height:200px;">
+        </div>
+
+        <div class="container">
+          <label><b>Title</b></label>
+          <input type="text" placeholder="Enter Title" name="utit" ng-model="newEvent.title">
+
+          <label><b>Date</b></label>
+          <input type="text" placeholder="Enter Date" name="edate" ng-model="newEvent.date">
+
+          <label><b>Time</b></label>
+          <input type="text" placeholder="Enter Time" name="etime" ng-model="newEvent.time">
+
+          <br/>
+          <label><b>Location</b></label>
+          <input type="text" placeholder="Enter Location" name="eloc" ng-model="newEvent.location">
+
+          <br/>
+          <label><b>Description</b></label>
+          <input type="text" placeholder="Enter Description" name="edes" ng-model="newEvent.description">
+
+          <br/>
+          <label><b>Category</b></label>
+          <input type="text" placeholder="Enter Category" name="ecat" ng-model="newEvent.category">
+
+          <br/>
+          <button class="loginbtn" onclick="document.getElementById('id03').style.display='none';alert('Your event has been successfully created!')" ng-click="addEvent()">Submit</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+          <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        var logedIn = false;
+        function login() {
+            logedIn = !logedIn;
+            if(logedIn) {
+                document.getElementById('lin').style.display = 'none';
+                document.getElementById('orginfo').style.display = '';
+                var uname = document.getElementById('username').value;
+                var text = "Welcome, Member of " + uname + "!";
+                document.getElementById('welcome').innerHTML = text;
+                alert("You have successfully logged in!");
+            } else {
+                document.getElementById('lin').style.display = 'inline';
+                document.getElementById('orginfo').style.display = 'none';
+                alert("You have logged out!");
+                document.getElementById('welcome').innerHTML = "Welcome, Organization User!";
+            }
+        }
+
+        var app = angular.module('angularjs-starter', []);
+
+        app.controller('MainCtrl', function($scope) {
+            $scope.init = function(name, id){
+                //This function is sort of private constructor for controller
+                $scope.id = id;
+                $scope.name = name; 
+                //Based on passed argument you can make a call to resource
+                //and initialize more objects
+                //$resource.getMeBond(007)
+              };
+        });
+    </script>
+
+    <div id="lin">
+        <button class="btn btn-primary" type="button" style="width:auto;float:left" onclick="document.getElementById('id01').style.display='block'"><font color="white">Login</font></button>
+        <button class="btn btn-link" type="button" style="width:auto;float:left" onclick="document.getElementById('id02').style.display='block'"> Register</button>
+    </div>
+
+    
+
+    <div id="orginfo" style="display:none">
+        <button class="btn btn-default" type="button" onclick="login()" style="width:auto"><font color="black">Logout</font></button>&nbsp;&nbsp;
+
+        <button class="btn btn-primary" type="button" style="float: right" ng-click="importFB()"> Import Events from Facebook</button>
+
+        <button class="btn btn-info" type="button" style="float: right" onclick="document.getElementById('id03').style.display='block'"><font color="white">Create Event</font></button>
+    	<br/><br/>
+
+    	<div class ="row">
+    		<div class="panel panel-default">
+    		    <!-- Default panel contents -->
+    		    <div class="panel-heading"> Listed Events </div>
+    			
+    		</div>
+        </div>
+
+    	<div class="row">
+    		<div ng-repeat="event in getDataSource('SU' ,events) | orderBy : orderByDate" class="list-group col-md-6">
+    		    <div class="list-group-item success col-md-6" style="height:200px">
+    			    <h4 class="list-group-item-heading">{{ event.title }}</h4>
+    			    <p class="list-group-item-text">{{ event.location }}</p>
+    			    <p class="list-group-item-text">{{ event.date }}</p>
+    			    <p class="list-group-item-text">{{ event.time }}</p>
+                    <div style="margin-top:15px">
+    			         <span class="label label-success">Attendees: {{event.people}}</span>
+    			         <button class="btn btn-warning" ng-click="edit(event)" onclick="document.getElementById('id03').style.display='block'">Modify</button>
+    			         <button class="btn btn-danger" ng-click="remove(event)">Delete</button>
+                    </div>
+    		    </div>
+
+                <div class="img">
+                    <img style="float:right" ng-src="{{ event.pic }}" class="img" alt="Event Image Not Available">
+                </div>
+
+    		</div>
+        </div>
+    </div>
 	
 </div>

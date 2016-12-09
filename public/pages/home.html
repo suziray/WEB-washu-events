@@ -1,25 +1,240 @@
 <div class="jumbotron">
-	<a type="button" class="btn btn-primary btn-lg" ng-click="cat = ''; thisWeek = false; message = 'All the awesome events!'">All</a>
-	<a type="button" class="btn btn-primary btn-lg" ng-click="cat = 'free_food'; thisWeek = false; message = 'All about food.'">Free Food</a>
-	<a type="button" class="btn btn-primary btn-lg" ng-click="cat = 'performing_arts'; thisWeek = false; message = 'All about arts.'">Performing Arts</a>
-	<a type="button" class="btn btn-primary btn-lg" ng-click="cat = ''; thisWeek = true; message = 'All about this week.'">This Week</a>
 	<h1 class="text-center">Events</h1>
-	
-	<p class="text-center">{{ message }}</p>
-	<div ng-repeat="event in events | orderBy : orderByDate | filter:{category:cat} | thisWeekFilter: thisWeek" class="list-group">
-	  <a href="#" class="list-group-item active">
-	    <h4 class="list-group-item-heading">{{ event.title }}</h4>
-	    <p class="list-group-item-text">{{ event.description }}</p>		
-	    <p class="list-group-item-text">{{ event.location }}</p>
-		<p class="list-group-item-text">{{ event.date }}</p>
-		<p class="list-group-item-text">{{ event.time }}</p>
-		<a type="button" class="btn btn-primary btn-lg" href="map.html">
-		  location
-		</a>
-		<a href="" id="{{ event.id }}">click here to download your calender file</a>
 
-	  </a>
+	<style>
+		.img {
+		    position: relative;
+		    float: left;
+		    width:  300px;
+		    height: 200px;
+		    background-position: 50% 50%;
+		    background-repeat: no-repeat;
+		    background-size: cover;
+		}
+		/* Full-width input fields */
+	    input[type=text], input[type=password] {
+	        width: 100%;
+	        height: 40px;
+	        padding: 10px 15px;
+	        margin: 8px 0;
+	        display: inline-block;
+	        border: 1px solid #ccc;
+	        box-sizing: border-box;
+	        font-size: 15px;
+	    }
+
+	    /* Set a style for all buttons */
+	    .loginbtn {
+	        height: 40px;
+	        background-color: #4CAF50;
+	        color: white;
+	        margin: 8px 0;
+	        border: none;
+	        cursor: pointer;
+	        width: 100%;
+	        font-size: 15px;
+	    }
+
+	    /* Extra styles for the cancel button */
+	    .cancelbtn {
+	        height: 40px;
+	        background-color: #f44336;
+	        color: white;
+	        margin: 8px 0;
+	        border: none;
+	        cursor: pointer;
+	        width: 50%;
+	        font-size: 15px;
+	    }
+
+	    .downloadbtn {
+	        height: 40px;
+	        background-color: #4CAF50;
+	        color: white;
+	        margin: 8px 0;
+	        border: none;
+	        right: 0px;
+	        cursor: pointer;
+	        width: 45%;
+	        font-size: 15px;
+	    }
+
+	    /* Center the image and position the close button */
+	    .imgcontainer {
+	        text-align: center;
+	        margin: 24px 0 12px 0;
+	        position: relative;
+	    }
+
+	    img.avatar {
+	        width: 30%;
+	        border-radius: 100%;
+	    }
+
+	/*    .container {
+	        padding: 16px;
+	    }*/
+
+	    span.psw {
+	        float: right;
+	        padding-top: 16px;
+	    }
+	    /* The Modal (background) */
+	    .modal {
+	        display: none; /* Hidden by default */
+	        position: fixed; /* Stay in place */
+	        z-index: 1; /* Sit on top */
+	        left: 0;
+	        top: 0;
+	        width: 100%; /* Full width */
+	        height: 100%; /* Full height */
+	        overflow: auto; /* Enable scroll if needed */
+	        background-color: rgb(0,0,0); /* Fallback color */
+	        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	        padding-top: 60px;
+	    }
+
+	    /* Modal Content/Box */
+	    .modal-content {
+	        background-color: #fefefe;
+	        margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+	        border: 1px solid #888;
+	        width: 50%; /* Could be more or less, depending on screen size */
+	        font-size: 15px;
+	    }
+
+	    /* The Close Button (x) */
+	    .close {
+	        position: absolute;
+	        right: 25px;
+	        top: 0;
+	        color: #000;
+	        font-size: 35px;
+	        font-weight: bold;
+	    }
+
+	    .close:hover,
+	    .close:focus {
+	        color: red;
+	        cursor: pointer;
+	    }
+
+	    /* Add Zoom Animation */
+	    .animate {
+	        -webkit-animation: animatezoom 0.6s;
+	        animation: animatezoom 0.6s
+	    }
+
+	    @-webkit-keyframes animatezoom {
+	        from {-webkit-transform: scale(0)} 
+	        to {-webkit-transform: scale(1)}
+	    }
+	        
+	    @keyframes animatezoom {
+	        from {transform: scale(0)} 
+	        to {transform: scale(1)}
+	    }
+
+	    /* Change styles for span and cancel button on extra small screens */
+	    @media screen and (max-width: 300px) {
+	        span.psw {
+	           display: block;
+	           float: none;
+	        }
+	        .cancelbtn {
+	           width: 100%;
+	        }
+	    }
+	</style>
+
+    <p class="text-center">{{ message }}</p>
+	<div class="row tabbar">
+		<div class="col-md-3">
+			<a type="button" class="btn btn-primary btn-lg" ng-click="cat = ''; thisWeek = false; message = 'All the awesome events!'">All</a>
+	    </div>
+		<div class="col-md-3">
+			<a type="button" class="btn btn-warning btn-lg" ng-click="cat = 'free_food'; thisWeek = false; message = 'All about food.'">Free Food</a>
+		</div>
+		<div class="col-md-3">
+			<a type="button" class="btn btn-success btn-lg" ng-click="cat = 'performing_arts'; thisWeek = false; message = 'All about arts.'">Performing Arts</a>
+		</div>
+		<div class="col-md-3">
+			<a type="button" class="btn btn-danger btn-lg" ng-click="cat = ''; thisWeek = true; message = 'Events this week.'">This Week</a>
+		</div>
 	</div>
+
+	<div id="id" class="modal">
+      
+      <form class="modal-content animate">
+        <div class="imgcontainer">
+          <span onclick="document.getElementById('id').style.display='none'" class="close" title="Close Modal">&times;</span>
+        </div>
+
+        <div class="container">
+        	  <label><b>Title</b> </label>&nbsp;&nbsp;&nbsp;{{currEvent.title}}
+        	  <br>
+
+	          <label><b>Description</b></label>
+	          <p> {{currEvent.description}} </p>
+
+	          <label><b>Location</b></label>&nbsp;&nbsp;&nbsp;{{currEvent.location}}<br>
+
+	          <label><b>Hosted by</b></label>&nbsp;&nbsp;&nbsp;{{currEvent.host}}<br>
+
+	          <label><b>Date</b></label>&nbsp;&nbsp;&nbsp;{{currEvent.date}}<br>
+
+	          <label><b>Time</b></label>&nbsp;&nbsp;&nbsp;{{currEvent.time}}<br>
+
+	          <label><b>Friends going</b></label>&nbsp;&nbsp;&nbsp;{{currEvent.people}}<br>
+
+	          <label><b>Liked by</b></label>&nbsp;&nbsp;&nbsp;{{currEvent.peopleFav}}<br>
+
+	          <a class="btn btn-link" href="map.html">Map</a>
+				
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+          <button type="button" onclick="document.getElementById('id').style.display='none'" class="cancelbtn">Cancel</button>
+          <button type="button" onClick="download('myfilename.ics')" class="downloadbtn">Download</button>
+        </div>
+      </form>
+    </div>
+	
+	<div class="row">
+		<div ng-repeat="event in events | orderBy : orderByDate | filter:{category:cat} | thisWeekFilter: thisWeek" class="list-group col-md-6">
+		    <div href="#" class="list-group-item success col-md-6" style="height:200px">
+			    <h4 class="list-group-item-heading">{{ event.title }}</h4>
+			    <p class="list-group-item-text">{{ event.location }}</p>
+				<p class="list-group-item-text">{{ event.date }}</p>
+				<p class="list-group-item-text">{{ event.time }}</p>
+				<p class="list-group-item-text">
+					<a onclick="document.getElementById('id').style.display='block'" ng-click="setCurr(event)">
+				  Details
+					</a>
+				</p>
+				<!--  -->
+				<p class="list-group-item-text">
+					<a ng-if="event.favorite==false" ng-click="addToFavorite(event)">Add to Favorite </a>
+					<a ng-if="event.favorite==true" ng-click="removeFromFavorite(event)">Remove from Favorite </a>
+				</p>
+				
+		    </div>
+		    <div class="img">
+				<img style="float:right" ng-src="{{ event.pic }}" class="img" alt="Event Image Not Available">
+		    </div>
+		</div>
+
+	</div>
+
+    <script>
+	    var modal = document.getElementById('id');
+	        // When the user clicks anywhere outside of the modal, close it
+	    window.onclick = function(event) {
+	        if (event.target == modal) {
+	            modal.style.display = "none";
+	        }
+        }
+    </script>
 
 </div>
 

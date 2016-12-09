@@ -1,37 +1,235 @@
 <div class="jumbotron">
-	<h1 class="text-center">Welcome, Student User! </h1>
+	<h1 class="text-center">Welcome, Student! </h1>
+
+	<style>
+    /* Full-width input fields */
+    input[type=text], input[type=password] {
+        width: 100%;
+        height: 40px;
+        padding: 10px 15px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 15px;
+    }
+
+    /* Set a style for all buttons */
+    .loginbtn {
+        height: 40px;
+        background-color: #4CAF50;
+        color: white;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        font-size: 15px;
+    }
+
+    /* Extra styles for the cancel button */
+    .cancelbtn {
+        height: 40px;
+        background-color: #f44336;
+        color: white;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 50%;
+        font-size: 15px;
+    }
+
+    /* Center the image and position the close button */
+    .imgcontainer {
+        text-align: center;
+        margin: 24px 0 12px 0;
+        position: relative;
+    }
+
+    img.avatar {
+        width: 30%;
+        border-radius: 100%;
+    }
+
+/*    .container {
+        padding: 16px;
+    }*/
+
+    span.psw {
+        float: right;
+        padding-top: 16px;
+    }
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        padding-top: 60px;
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+        border: 1px solid #888;
+        width: 50%; /* Could be more or less, depending on screen size */
+        font-size: 15px;
+    }
+
+    /* The Close Button (x) */
+    .close {
+        position: absolute;
+        right: 25px;
+        top: 0;
+        color: #000;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: red;
+        cursor: pointer;
+    }
+
+    /* Add Zoom Animation */
+    .animate {
+        -webkit-animation: animatezoom 0.6s;
+        animation: animatezoom 0.6s
+    }
+
+    @-webkit-keyframes animatezoom {
+        from {-webkit-transform: scale(0)} 
+        to {-webkit-transform: scale(1)}
+    }
+        
+    @keyframes animatezoom {
+        from {transform: scale(0)} 
+        to {transform: scale(1)}
+    }
+
+    /* Change styles for span and cancel button on extra small screens */
+    @media screen and (max-width: 300px) {
+        span.psw {
+           display: block;
+           float: none;
+        }
+        .cancelbtn {
+           width: 100%;
+        }
+    }
+	.img {
+            position: relative;
+            float: left;
+            width:  300px;
+            height: 200px;
+            background-position: right;
+            background-repeat: no-repeat;
+            background-size: cover;
+    }
+    </style>
 	
 	<p class="text-center">{{ message }}</p>
-	<button><a href="#profile">Edit Profile</a></button>
+	<button class="btn btn-warning" onclick="document.getElementById('id').style.display='block'">Edit Profile</button>
+
+	<div id="id" class="modal">
+      
+      <form class="modal-content animate">
+        <div class="imgcontainer">
+          <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+        </div>
+
+        <div class="container">
+          <label><b>Name</b></label>
+          <input type="text" placeholder="Enter Name" value="Ray Su" name="uname" required>
+
+          <label><b>Gender</b></label>
+          <input type="text" placeholder="Enter Gender" value="Male" name="ugender" required>
+
+          <label><b>Grade</b></label>
+		    <select>
+		        <option value="1">Freshman</option>
+		        <option value="2">Sophomore</option>
+		        <option value="3">Junior</option>
+		        <option value="4">Senior</option>
+		        <option value="5">Grad</option>
+		        <option value="6">PhD</option>
+		        <option value="7">Faculty</option>
+		    </select>
+           
+          <label><b>Dorm</b></label>
+		    <input type="text" placeholder="Enter Dorm Location" value="Ruby" name="uloc" required>
+		    <br/>
+		    <label><b>Interested In</b></label>
+		    <input type="checkbox" checked="checked"> Free Food
+		    <input type="checkbox" checked="checked"> Performaing Arts
+		    <input type="checkbox" checked="checked"> Cultural Events
+		    <input type="checkbox" checked="checked"> Professional Development
+
+          <button class="loginbtn" onclick="document.getElementById('id').style.display='none';alert('Your profile has been updated')">Save</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+          <button type="button" onclick="document.getElementById('id').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+      </form>
+    </div>
 	<br/><br/>
 	<div class="panel panel-default">
 	  <!-- Default panel contents -->
 	  <div class="panel-heading"> Recommended Events </div>
-		<div ng-repeat="event in getDataSource('student_user', events) | orderBy : orderByDate" class="list-group">
-		  <a href="#" class="list-group-item active">
+		<div ng-repeat="event in getRecommendedEvents(events) | orderBy : orderByDate" class="list-group">
+		  <a class="list-group-item" style="height:220px">
+		    <img style="float:right" ng-src="{{ event.pic }}" class="img" alt="Event Image Not Available">
 		    <h4 class="list-group-item-heading">{{ event.title }}</h4>
 		    <p class="list-group-item-text">{{ event.description }}</p>
-		    <p class="list-group-item-text">{{ event.location }}</p>
-		    <p class="list-group-item-text">{{ event.date }}</p>
-		    <p class="list-group-item-text">{{ event.time }}</p>
-		    <button>Add to Favorite</button>
-		    <button>Not Interested</button>
-		    <button>Attended</button>
+		    <p class="list-group-item-text">Location: {{ event.location }}</p>
+		    <p class="list-group-item-text">Date: {{ event.date }}</p>
+		    <p class="list-group-item-text">Time: {{ event.time }}</p>
+		    <button class="btn btn-success" ng-click="addToFavorite(event)" onclick="alert('Added to favorite')">Add to Favorite</button>
+		    <button class="btn btn-danger" ng-click="removeFromRecommendations(event)">Not Interested</button>
+		    <button class="btn btn-primary" onclick="alert('We look forward to your visit!')">Will Attend</button>
+		    <button class="btn btn-info" onClick="download('myfilename.ics')" >
+			  Download
+			</button>
+	         <span class="label label-success">Friends going: {{event.people}}</span>
+
 		  </a>
+		    
+		  	
 		</div>
 	</div>
 
 	<div class="panel panel-default">
 	  <!-- Default panel contents -->
 	  <div class="panel-heading"> Favorite Events </div>
-		<div ng-repeat="event in getDataSource('student_user_favor', events) | orderBy : orderByDate" class="list-group">
-		  <a href="#" class="list-group-item active">
+		<div ng-repeat="event in getFavoriteEvents(events) | orderBy : orderByDate" class="list-group">
+		  <a class="list-group-item">
 		    <h4 class="list-group-item-heading">{{ event.title }}</h4>
 		    <p class="list-group-item-text">{{ event.description }}</p>		    
-		    <p class="list-group-item-text">{{ event.location }}</p>
-		    <p class="list-group-item-text">{{ event.date }}</p>
-		    <p class="list-group-item-text">{{ event.time }}</p>
+		    <p class="list-group-item-text">Location: {{ event.location }}</p>
+		    <p class="list-group-item-text">Date: {{ event.date }}</p>
+		    <p class="list-group-item-text">Time: {{ event.time }}</p>
+		    <button class="btn btn-danger" ng-click="removeFromFavorite(event)">Remove from Favorite</button>
 		  </a>
 		</div>
 	</div>
+
+	<script>
+        // Get the modal
+        var modal = document.getElementById('id');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </div>
